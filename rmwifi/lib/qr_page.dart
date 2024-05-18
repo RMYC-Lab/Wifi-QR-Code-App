@@ -16,7 +16,7 @@ class QRPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('QR Page'),
+        title: const Text('QR Code'),
       ),
       body: Column(
         // mainAxisAlignment: MainAxisAlignment.center,
