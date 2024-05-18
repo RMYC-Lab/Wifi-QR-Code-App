@@ -1,4 +1,4 @@
-package com.example.rmwifi
+package com.rmyc_lab.rmwifi
 
 import io.flutter.embedding.android.FlutterActivity
 

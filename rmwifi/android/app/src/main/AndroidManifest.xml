@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="rmwifi"
+        android:label="RMYC Wifi App"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -41,4 +41,7 @@
             <data android:mimeType="text/plain"/>
         </intent>
     </queries>
+
+    <!-- Camera Permission -->
+    <uses-permission android:name="android.permission.CAMERA" />
 </manifest>
