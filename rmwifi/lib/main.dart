@@ -37,6 +37,23 @@ class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   final ImagePicker _picker = ImagePicker();
   final ScanController controller = ScanController();
+  late final AppLifecycleListener _listener;
+  bool entered = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _listener = AppLifecycleListener(
+      onHide: () {
+        controller.pause();
+      },
+      onShow: () {
+        if (!entered) {
+          controller.resume();
+        }
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,9 +78,11 @@ class _MyHomePageState extends State<MyHomePage> {
               scanLineColor: Colors.blue,
               onCapture: (data) async {
                 if (tryDecode(data)) {
+                  entered = true;
                   controller.pause();
                   await Get.to(() => const QRPage(), arguments: data);
                   controller.resume();
+                  entered = false;
                 } else {
                   Fluttertoast.showToast(msg: "Invalid QR code");
                   controller.resume();
@@ -91,6 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 FloatingActionButton(
                   heroTag: "btn3",
                   onPressed: () {
+                    entered = true;
                     controller.pause();
                     _picker.pickImage(source: ImageSource.gallery).then((value) async {
                       if (value == null) {
@@ -104,12 +124,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         return;
                       }
                       if (!tryDecode(result)) {
-                        await Fluttertoast.showToast(msg: "Invalid QR code");
+                        Fluttertoast.showToast(msg: "Invalid QR code");
                         controller.resume();
                         return;
                       }
                       await Get.to(() => const QRPage(), arguments: result);
                       controller.resume();
+                      entered = false;
                     });
                   },
                   child: const Icon(Icons.photo_library),
